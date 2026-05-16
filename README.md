@@ -3,8 +3,8 @@
 
 > **CIRO is the only emergency app in Pakistan that speaks to you in Urdu, listens to your voice commands, detects crises before they reach you, and guides you step by step — whether you are at home in Karachi or driving to Lahore.**
 
-**Live App:** https://ciro-pakistan.netlify.app
-**GitHub:** https://github.com/your-team/ciro
+**Live App:** https://ciro-pakistan.vercel.app/
+**GitHub:** https://github.com/sadsunsuf-lgtm/CIRO-Antigravity-Hackathon
 
 ---
 
@@ -378,7 +378,7 @@ CIRO/
 
 ## Mandatory Submission Checklist
 
-- [x] Mobile App Link — Deployed on Netlify HTTPS, installable as PWA
+- [x] Mobile App Link — Deployed on Vercel HTTPS.
 - [x] GitHub Repository — All source files, agents, data, documentation
 - [x] Demo Video 3-5 min — All 5 tabs, voice commands, stress tests, bilingual toggle
 - [x] Antigravity Usage Video — Python pipeline running with all 15 agent logs and agent_trace.json generation
