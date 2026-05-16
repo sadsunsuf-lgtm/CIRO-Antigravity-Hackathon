@@ -1,0 +1,38 @@
+{
+    "timestamp": "2026-05-15T00:03:54.062871",
+    "impact_score": 212.5,
+    "resources_remaining": {
+        "ambulances": 12,
+        "fire_trucks": 8,
+        "boats": 5
+    },
+    "final_traffic_index": 94.66,
+    "optimization_metrics": {
+        "efficiency": {
+            "manual": 2700,
+            "ciro": 490.9,
+            "efficiency": 81.8
+        },
+        "priority_logic": {
+            "matrix": [
+                {
+                    "type": "Flood",
+                    "casualty_risk": "Medium",
+                    "infra_risk": "High"
+                },
+                {
+                    "type": "Heatwave",
+                    "casualty_risk": "High",
+                    "infra_risk": "Low"
+                }
+            ],
+            "decision": "DECISION: Prioritizing Heatwave units due to 30% higher casualty risk in elderly populations."
+        },
+        "ticker_logs": [
+            "[ACTION] Drone-01 verifying G-10 reports...",
+            "[ACTION] Traffic diverted to Drigh Road...",
+            "[ACTION] 1122 Ticket REQ-992 generated."
+        ]
+    },
+    "status": "Contained"
+}

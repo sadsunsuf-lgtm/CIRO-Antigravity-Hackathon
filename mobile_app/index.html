@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CIRO | Enterprise Crisis Command</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="scanline"></div>
+    <div class="noise"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-area">
+                <div class="logo-icon"><span>C</span></div>
+                <div class="brand">
+                    <h1>CIRO COMMAND</h1>
+                    <span class="sub-brand">Enterprise Crisis Orchestrator</span>
+                </div>
+            </div>
+            <div class="system-health">
+                <div class="health-item">
+                    <span class="health-label">AG CORE</span>
+                    <div class="health-bar"><div class="bar-fill" id="core-health" style="width: 98%;"></div></div>
+                </div>
+                <div class="health-item">
+                    <span class="health-label">SENSORS</span>
+                    <div class="health-bar"><div class="bar-fill" id="sensor-health" style="width: 95%;"></div></div>
+                </div>
+            </div>
+            <div class="status-panel">
+                <span id="system-time">00:00:00</span>
+                <div class="status-tag">
+                    <div class="status-dot"></div>
+                    <span>ORCHESTRATOR LIVE</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-grid">
+            <!-- Multi-Crisis Active List -->
+            <section class="active-crises-panel glass">
+                <div class="section-title">ACTIVE CRISIS NODES</div>
+                <div id="active-incidents" class="incident-stack">
+                    <div class="incident-node active" id="inc-001">
+                        <div class="inc-header">
+                            <span class="inc-id">ISB-FLOOD-01</span>
+                            <span class="inc-status">DETECTING</span>
+                        </div>
+                        <div class="inc-mini-stats">
+                            <span>SEV: 0</span>
+                            <span>CONF: 0%</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stress Test Controls -->
+            <section class="scenario-panel glass">
+                <div class="section-title">STRESS TEST SIMULATION</div>
+                <div class="scenario-grid">
+                    <button class="scenario-btn active" id="btn-DUAL_CRISIS" onclick="setScenario('DUAL_CRISIS')">DUAL CRISIS</button>
+                    <button class="scenario-btn" id="btn-API_FAIL" onclick="setScenario('API_FAIL')">API FAILURE</button>
+                    <button class="scenario-btn" id="btn-RES_SHORTAGE" onclick="setScenario('RESOURCE_SHORTAGE')">RES SHORTAGE</button>
+                    <button class="scenario-btn" id="btn-FALSE_ALARM" onclick="setScenario('FALSE_ALARM')">FALSE ALARM</button>
+                </div>
+            </section>
+
+            <!-- Incident Lifecycle Stepper -->
+            <section class="lifecycle-panel glass">
+                <div class="lifecycle-stepper" id="lifecycle-stepper">
+                    <div class="step active" id="step-detected"><span>DET</span><label>Detected</label></div>
+                    <div class="step" id="step-verified"><span>VER</span><label>Verified</label></div>
+                    <div class="step" id="step-escalated"><span>ESC</span><label>Escalated</label></div>
+                    <div class="step" id="step-responding"><span>RES</span><label>Responding</label></div>
+                    <div class="step" id="step-contained"><span>CON</span><label>Contained</label></div>
+                    <div class="step" id="step-recovered"><span>REC</span><label>Recovered</label></div>
+                </div>
+            </section>
+
+            <div class="row-1">
+                <!-- Map & Vulnerability -->
+                <section class="map-card glass">
+                    <div class="section-title">STRATEGIC BATTLESPACE</div>
+                    <div class="pakistan-map-container">
+                        <div id="layer-flood" class="vulnerability-layer"></div>
+                        <div id="layer-heat" class="vulnerability-layer"></div>
+                        <div class="pakistan-map">
+                            <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="map-svg">
+                                <path d="M120 350 L80 300 L50 250 L40 180 L80 120 L150 80 L250 50 L320 100 L350 180 L300 280 L220 330 Z" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" stroke-width="2" />
+                                <path d="M0 100 L400 100 M0 200 L400 200 M0 300 L400 300 M100 0 L100 400 M200 0 L200 400 M300 0 L300 400" stroke="rgba(0, 229, 255, 0.03)" stroke-width="1" />
+                                <path id="route-isb" d="M210 110 L230 150 L260 180" class="map-route" />
+                                <path id="route-khi" d="M100 320 L130 280 L150 250" class="map-route" />
+                                <circle id="hotspot-isb" cx="210" cy="110" r="8" class="map-hotspot" />
+                                <circle id="hotspot-khi" cx="100" cy="320" r="8" class="map-hotspot" />
+                                <circle id="hotspot-lhr" cx="260" cy="180" r="8" class="map-hotspot" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="layer-controls">
+                        <button class="layer-btn" id="toggle-flood" onclick="toggleLayer('flood')">FLOOD ZONE</button>
+                        <button class="layer-btn" id="toggle-heat" onclick="toggleLayer('heat')">HEAT ZONE</button>
+                    </div>
+                </section>
+
+                <!-- Resource Management -->
+                <section class="resource-card glass">
+                    <div class="section-title">RESOURCE ALLOCATION & OPTIMIZATION</div>
+                    <div class="resource-grid-new">
+                        <div class="res-node" id="node-amb">
+                            <i class="fa-solid fa-ambulance"></i>
+                            <span id="res-amb" class="res-v">10</span>
+                            <span class="res-l">AMB</span>
+                        </div>
+                        <div class="res-node" id="node-pol">
+                            <i class="fa-solid fa-police-badge"></i>
+                            <span id="res-pol" class="res-v">05</span>
+                            <span class="res-l">POL</span>
+                        </div>
+                        <div class="res-node" id="node-res">
+                            <i class="fa-solid fa-fire-extinguisher"></i>
+                            <span id="res-res" class="res-v">08</span>
+                            <span class="res-l">RESCUE</span>
+                        </div>
+                        <div class="res-node hospital" id="hosp-node">
+                            <i class="fa-solid fa-hospital"></i>
+                            <span id="hosp-ready" class="res-v">READY</span>
+                            <span class="res-l">PIMS ER</span>
+                        </div>
+                    </div>
+                    <div id="allocation-reasoning" class="alloc-reason">Awaiting resource request...</div>
+                </section>
+            </div>
+
+            <!-- Severity & Prediction -->
+            <div class="row-1">
+                <section class="severity-card glass">
+                    <div class="gauge-container">
+                        <svg class="gauge-svg" viewBox="0 0 100 100">
+                            <circle class="gauge-track" cx="50" cy="50" r="45" />
+                            <circle id="severity-gauge" class="gauge-bar" cx="50" cy="50" r="45" />
+                        </svg>
+                        <div class="gauge-data">
+                            <span id="severity-val">0</span>
+                            <span class="conf-badge">CONF: <span id="conf-perc">0%</span></span>
+                        </div>
+                    </div>
+                    <div id="contradictory-flag" class="flag-warn hidden">CONTRADICTORY SIGNAL DETECTED</div>
+                </section>
+
+                <section class="impact-prediction glass">
+                    <div class="section-title">PREDICTION & EVOLUTION MODEL</div>
+                    <div class="impact-grid">
+                        <div class="impact-item">
+                            <span class="i-label">AFFECTED POP</span>
+                            <span id="impact-pop" class="i-val">---</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="i-label">PEAK IMPACT</span>
+                            <span id="impact-peak" class="i-val">---</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="i-label">EST. DURATION</span>
+                            <span id="impact-duration" class="i-val">---</span>
+                        </div>
+                        <div class="impact-item">
+                            <span class="i-label">UNCERTAINTY</span>
+                            <span id="impact-uncertainty" class="i-val">---</span>
+                        </div>
+                    </div>
+                    <div class="vulnerable-entities">
+                        <span class="e-label">NEARBY ASSETS:</span>
+                        <div id="asset-list" class="asset-tags">
+                            <span class="tag">SCHOOLS</span>
+                            <span class="tag">HOSPITALS</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- NEW: BEFORE vs AFTER SIMULATION PANEL -->
+            <section class="simulation-panel">
+                <div class="sim-card sim-before glass">
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> BEFORE RESPONSE</h3>
+                    <div class="sim-metrics">
+                        <div class="sim-metric"><span class="sim-m-label">Congestion Level</span><span class="sim-m-val">CRITICAL</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Response Teams</span><span class="sim-m-val">0</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Stranded Vehicles</span><span class="sim-m-val">47</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Public Awareness</span><span class="sim-m-val">LOW</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Avg Response Time</span><span class="sim-m-val">45 min</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Casualties Risk</span><span class="sim-m-val" style="color: var(--accent-red)">HIGH</span></div>
+                    </div>
+                </div>
+
+                <div class="improvement-badge" id="speed-badge">
+                    -82%
+                    <span>faster</span>
+                </div>
+
+                <div class="sim-card sim-after glass">
+                    <h3><i class="fa-solid fa-circle-check"></i> AFTER RESPONSE</h3>
+                    <div class="sim-metrics">
+                        <div class="sim-metric"><span class="sim-m-label">Congestion Level</span><span class="sim-m-val" id="after-congestion">---</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Response Teams</span><span class="sim-m-val" id="after-teams">---</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Stranded Vehicles</span><span class="sim-m-val" id="after-stranded">---</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Public Awareness</span><span class="sim-m-val" id="after-awareness">---</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Avg Response Time</span><span class="sim-m-val" id="after-time">---</span></div>
+                        <div class="sim-metric"><span class="sim-m-label">Casualties Risk</span><span class="sim-m-val" id="after-risk">---</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trace & Notifications -->
+            <div class="row-1">
+                <section class="trace-card glass">
+                    <div class="trace-header">
+                        <div class="trace-title"><i class="fa-solid fa-brain"></i> <span>ANTIGRAVITY TRACE</span></div>
+                        <button id="run-orchestrator" class="btn-main" onclick="initiateOrchestration()">INITIATE CORE</button>
+                        <div class="orchestration-progress"><div id="progress-fill"></div></div>
+                    </div>
+                    <div class="trace-body" id="trace-log">
+                        <div class="trace-line system"><span class="trace-agent">SYSTEM</span><span class="trace-msg">Standing by for signal fusion...</span></div>
+                    </div>
+                </section>
+
+                <section class="notification-card glass">
+                    <div class="section-title">STAKEHOLDER NOTIFICATION FEED</div>
+                    <div id="notification-feed" class="notify-list">
+                        <div class="notify-placeholder">Awaiting mobilization...</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer>
+            <div class="system-stats">
+                <span>SYSTEM: CIRO-AG-CORE-V3</span>
+                <span>ENC: AES-4096</span>
+                <span id="latency-val">LATENCY: 0.8ms</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

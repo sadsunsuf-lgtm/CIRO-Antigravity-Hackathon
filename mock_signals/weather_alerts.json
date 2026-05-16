@@ -1,0 +1,18 @@
+{
+  "status": "success",
+  "data": {
+    "city": "Islamabad",
+    "region": "G-Sector / G-10",
+    "warning_level": "Red",
+    "current_rain_mm": 45,
+    "temperature_c": 42,
+    "humidity_percent": 89,
+    "flood_risk": "Critical",
+    "heatwave_risk": "High",
+    "wind_speed_kmh": 35,
+    "forecast_next_3h": "Continued heavy rainfall expected",
+    "warning_issued": "2026-05-13T12:00:00Z",
+    "source": "Pakistan Meteorological Department (PMD)",
+    "credibility_score": 0.95
+  }
+}

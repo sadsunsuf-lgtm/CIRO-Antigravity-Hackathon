@@ -1,0 +1,40 @@
+{
+    "source": "Twitter/X",
+    "data": [
+        {
+            "user": "@KarachiRain",
+            "text": "Huge flooding in G-10 area! Cars are stuck.",
+            "timestamp": "2026-05-12T16:00Z",
+            "location": "G-10"
+        },
+        {
+            "user": "@CitizenReport",
+            "text": "I see smoke near the main power grid.",
+            "timestamp": "2026-05-12T16:05Z",
+            "location": "Industrial Zone"
+        },
+        {
+            "user": "@TrollAccount",
+            "text": "Everything is fine in G-10, no rain at all! Just a small puddle.",
+            "location": "G-10"
+        },
+        {
+            "user": "@IslamabadAlert",
+            "text": "G-10 mein pani bhar gaya hai, gaariyan phans gayi hain! Koi madad karo.",
+            "timestamp": "2026-05-12T16:10Z",
+            "location": "G-10"
+        },
+        {
+            "user": "@PakCitizen99",
+            "text": "bhai G-10 main bohot tez barish ho rahi hai, road band hai",
+            "timestamp": "2026-05-12T16:12Z",
+            "location": "G-10"
+        },
+        {
+            "user": "@KarachiLive",
+            "text": "Flash flood warning! Surjani Town mein halaat kharab hain.",
+            "timestamp": "2026-05-12T16:15Z",
+            "location": "Surjani Town"
+        }
+    ]
+}

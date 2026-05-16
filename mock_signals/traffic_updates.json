@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "data": {
+    "city": "Islamabad",
+    "location": "G-10 Main Boulevard",
+    "status": "Blocked",
+    "cause": "Urban Flooding / Waterlogging",
+    "delay_minutes": 75,
+    "congestion_level": "Critical",
+    "affected_roads": ["G-10 Main Blvd", "Margalla Road", "IJP Road"],
+    "alternate_routes": ["7th Avenue", "Lehtrar Road", "Srinagar Highway"],
+    "vehicles_stranded": 47,
+    "last_updated": "2026-05-13T13:15:00Z",
+    "source": "National Highway Authority (NHA) Traffic API",
+    "credibility_score": 0.90
+  }
+}
