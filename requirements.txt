@@ -1,0 +1,16 @@
+# CIRO — Python Backend Dependencies
+# All modules below are part of Python standard library (no pip install needed)
+# Python 3.8 or higher required
+
+# Standard Library (built-in):
+# json      — signal data loading and agent trace saving
+# os        — file path handling for mock_signals folder
+# datetime  — agent log timestamps and trace generation
+# random    — drone confirmation score simulation
+# time      — demo_loop 10-second refresh cycle
+
+# Future production dependencies (not needed for hackathon):
+# requests>=2.31.0        — for calling real PMD/NHA APIs
+# tweepy>=4.14.0          — for real Twitter/X feed
+# flask>=3.0.0            — if adding a backend server
+# python-dotenv>=1.0.0    — for storing API keys securely
