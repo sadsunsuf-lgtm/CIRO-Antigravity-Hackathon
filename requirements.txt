@@ -14,3 +14,9 @@
 # tweepy>=4.14.0          — for real Twitter/X feed
 # flask>=3.0.0            — if adding a backend server
 # python-dotenv>=1.0.0    — for storing API keys securely
+
+fastapi
+uvicorn
+transformers
+torch
+sentencepiece

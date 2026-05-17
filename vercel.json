@@ -1,0 +1,22 @@
+{
+  "builds": [
+    {
+      "src": "ciro_api.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "mobile_app/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "ciro_api.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/mobile_app/$1"
+    }
+  ]
+}

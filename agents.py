@@ -135,21 +135,53 @@ class SafetyManualAgent(CIROAgent):
 class CrisisDetectionAgent(CIROAgent):
     def __init__(self):
         super().__init__("DetectionAgent", "Anomaly Fusion")
+
     def detect(self, fused_data):
-        return {"detected": True, "type": "Urban Flood", "confidence": 0.85}
+        result = {
+            "detected": fused_data.get("crisis_detected", False),
+            "type": fused_data.get("crisis_type", "Unknown Incident"),
+            "confidence": fused_data.get("confidence_score", 0.0),
+            "severity": fused_data.get("severity_score", 0),
+            "location": fused_data.get("location", "Unknown Location"),
+            "recommended_action": fused_data.get("recommended_action", "MONITOR SITUATION")
+        }
+        self.log(
+            f"Detection complete: {result['type']} at {result['location']}.",
+            reasoning=f"Confidence {result['confidence']} from fused multi-source evidence.",
+            confidence=result['confidence'],
+            metadata={"severity": result['severity'], "recommended_action": result['recommended_action']}
+        )
+        return result
 
 class ReasoningAgent(CIROAgent):
     def __init__(self):
         super().__init__("ReasoningAgent", "Decision Logic")
 
-    def handle_conflict(self, crisis_a, crisis_b):
-        self.log("CONFLICT DETECTED: Simultaneous emergency events requiring shared resources.")
-        matrix = {
-            "Crisis A (Flood)": {"Casualty Risk": "Medium", "Infrastructure": "High"},
-            "Crisis B (Fire)": {"Casualty Risk": "High", "Infrastructure": "Medium"}
-        }
-        self.log("Generating Prioritization Matrix.", reasoning="Fire prioritized for primary dispatch due to immediate life-threat (Casualty Risk: High).", metadata={"matrix": matrix})
-        return "PRIORITIZE_FIRE"
+    def handle_conflict(self, fused_data):
+        notes = []
+        matrix = None
+
+        if fused_data.get('degraded_mode'):
+            notes.append("Degraded mode engaged: fallback data used for missing source(s).")
+
+        if fused_data.get('contradictory_signals'):
+            notes.append("Contradictory social signals detected against official warnings.")
+            notes.append("Verification required before full public alert.")
+            matrix = {
+                "Official Warning": {"Confidence": fused_data.get('credibility_breakdown', {}).get('weather', 0.0), "Action": "Verify"},
+                "Social Reports": {"Confidence": fused_data.get('credibility_breakdown', {}).get('social_avg', 0.0), "Action": "Flag for manual review"}
+            }
+            decision = "VERIFY_AND_HOLD_ALERT"
+        else:
+            notes.append("No major conflicts detected; proceeding with planned response.")
+            decision = "CONFIRM_ALERT"
+
+        self.log(
+            "Reasoning completed for crisis situation.",
+            reasoning="; ".join(notes),
+            metadata={"conflict_matrix": matrix, "decision": decision}
+        )
+        return {"decision": decision, "notes": notes, "matrix": matrix}
 
 class SeverityAnalysisAgent(CIROAgent):
     def __init__(self):
@@ -180,16 +212,76 @@ class ActionPlanningAgent(CIROAgent):
         self.log("Evaluating Multi-Crisis Priority Matrix...")
         matrix = []
         for c in crisis_list:
-            c_risk = "High" if c['type'] == 'Heatwave' else "Medium"
-            i_risk = "High" if c['type'] == 'Flood' else "Low"
-            matrix.append({"type": c['type'], "casualty_risk": c_risk, "infra_risk": i_risk})
-        
-        decision = "DECISION: Prioritizing Heatwave units due to 30% higher casualty risk in elderly populations."
-        self.log(decision, reasoning="Heat-related mortality spikes faster than flood-related infrastructure damage in urban Karachi.")
-        return {"matrix": matrix, "decision": decision}
+            c_risk = "High" if c['type'] in ['Heatwave', 'Urban Flooding'] else "Medium"
+            i_risk = "High" if c['type'] in ['Flood', 'Urban Flooding', 'Infrastructure Failure'] else "Medium"
+            matrix.append({
+                "type": c['type'],
+                "location": c.get('location'),
+                "severity": c.get('severity', 0),
+                "confidence": c.get('confidence', 0),
+                "casualty_risk": c_risk,
+                "infra_risk": i_risk
+            })
+        sorted_list = sorted(crisis_list, key=lambda x: (x.get('severity', 0) * x.get('confidence', 0)), reverse=True)
+        top = sorted_list[0] if sorted_list else None
+        decision = f"Prioritizing {top['type']} at {top.get('location')} based on highest weighted urgency." if top else "No crisis to prioritize."
+        self.log(decision, reasoning="Ranking crises by severity and confidence to allocate constrained resources.", metadata={"matrix": matrix})
+        return {"matrix": matrix, "priority_order": [c['type'] for c in sorted_list], "decision": decision}
 
-    def plan(self, impact):
-        return ["Reroute Traffic", "Deploy Drainage Pumps"]
+    def plan(self, crisis_list, resource_status):
+        self.log("Generating coordinated response plan for simultaneous incidents.")
+        available = resource_status.copy()
+        actions = []
+        for crisis in sorted(crisis_list, key=lambda x: (x.get('severity', 0) * x.get('confidence', 0)), reverse=True):
+            resources = {}
+            if crisis['type'] in ['Urban Flooding', 'Flood']:
+                resources = {"ambulances": 2, "fire_trucks": 1, "boats": 2}
+            elif crisis['type'] == 'Heatwave':
+                resources = {"ambulances": 3, "fire_trucks": 0, "boats": 0}
+            elif crisis['type'] == 'Industrial Fire':
+                resources = {"ambulances": 2, "fire_trucks": 3, "boats": 0}
+            elif crisis['type'] == 'Road Blockage':
+                resources = {"ambulances": 1, "fire_trucks": 1, "boats": 0}
+            else:
+                resources = {"ambulances": 1, "fire_trucks": 0, "boats": 0}
+
+            allocated = {}
+            shortages = {}
+            for unit, requested in resources.items():
+                available_count = available.get(unit, 0)
+                allocated[unit] = min(requested, available_count)
+                shortages[unit] = requested - allocated[unit]
+                available[unit] = available_count - allocated[unit]
+
+            crisis_actions = ["Send alert to public", "Notify nearest hospital", "Verify incident via drone"]
+            if crisis['type'] in ['Urban Flooding', 'Flood']:
+                crisis_actions.insert(0, "Reroute traffic away from flooded corridors")
+                crisis_actions.append("Deploy rescue boats")
+            if crisis['type'] == 'Heatwave':
+                crisis_actions.insert(0, "Open cooling shelters")
+                crisis_actions.append("Deploy medical outreach units")
+            if crisis['type'] == 'Industrial Fire':
+                crisis_actions.insert(0, "Deploy fire brigade units")
+                crisis_actions.append("Isolate nearby power grid")
+            if crisis['type'] == 'Road Blockage':
+                crisis_actions.insert(0, "Notify traffic authorities")
+                crisis_actions.append("Provide alternate route guidance")
+
+            plan_entry = {
+                "type": crisis['type'],
+                "location": crisis.get('location'),
+                "severity": crisis.get('severity', 0),
+                "confidence": crisis.get('confidence', 0),
+                "actions": crisis_actions,
+                "resources_requested": resources,
+                "resources_allocated": allocated,
+                "shortages": shortages,
+                "recommended_action": crisis.get('recommended_action')
+            }
+            actions.append(plan_entry)
+
+        self.log("Coordinated response plan created.", metadata={"actions": actions, "remaining_resources": available})
+        return {"actions": actions, "remaining_resources": available}
 
 class DispatchAgent(CIROAgent):
     def __init__(self):
@@ -208,8 +300,19 @@ class DispatchAgent(CIROAgent):
         return ticker_msg
 
     def execute(self, plan):
-        self.log("Dispatching emergency units (Edhi/Chhipa alerted).")
-        return {"status": "Dispatched", "sos": self.sos_list}
+        self.log("Executing dispatch plan for coordinated emergency response.")
+        tickets = []
+        for entry in plan.get('actions', []):
+            ticket_id = f"TKT-{random.randint(900,999)}{random.randint(10,99)}"
+            tickets.append({
+                "crisis": entry['type'],
+                "location": entry['location'],
+                "ticket_id": ticket_id,
+                "resources": entry['resources_allocated']
+            })
+            self.log(f"Created ticket {ticket_id} for {entry['type']} at {entry['location']}.", metadata={"resources": entry['resources_allocated']})
+
+        return {"status": "Dispatched", "tickets": tickets, "sos": self.sos_list}
 
 class NotificationAgent(CIROAgent):
     def __init__(self):
@@ -227,11 +330,56 @@ class NotificationAgent(CIROAgent):
 class SimulationAgent(CIROAgent):
     def __init__(self):
         super().__init__("SimulationAgent", "Predictive Modeling")
-    def simulate(self, data):
-        return {"duration": "4h"}
+    def simulate(self, plan_summary):
+        self.log("Simulating response execution and estimating outcome impacts.")
+        actions = plan_summary.get('actions', [])
+        total_actions = sum(len(entry['actions']) for entry in actions)
+        total_resources = sum(sum(entry['resources_allocated'].values()) for entry in actions)
+
+        before = {
+            "congestion_level": "Critical",
+            "response_delay_mins": 45,
+            "public_alerts": "Not sent",
+            "status": "Unresolved"
+        }
+        after = {
+            "congestion_level": "Moderate",
+            "response_delay_mins": max(10, 45 - total_actions * 3),
+            "public_alerts": "Sent",
+            "status": "Stabilizing"
+        }
+
+        if any(entry['type'] == 'Heatwave' for entry in actions):
+            after['response_delay_mins'] = max(8, after['response_delay_mins'] - 5)
+        if any(entry['type'] in ['Urban Flooding', 'Flood'] for entry in actions):
+            after['congestion_level'] = "High to Moderate"
+
+        side_effects = []
+        if len(actions) > 1:
+            side_effects.append("Simultaneous alerts may generate short-term evacuation congestion on alternate routes.")
+        if total_resources < 5:
+            side_effects.append("Limited ambulance availability may delay response to lower-priority incidents.")
+
+        simulation = {
+            "before": before,
+            "after": after,
+            "expected_improvement": {
+                "congestion_reduction": "20-35%",
+                "response_time_saving": f"{45 - after['response_delay_mins']} minutes"
+            },
+            "resources_used": total_resources,
+            "side_effects": side_effects,
+            "actions_executed": [entry['actions'] for entry in actions]
+        }
+        self.log("Simulation complete.", metadata=simulation)
+        return simulation
 
 class OutcomeEvaluationAgent(CIROAgent):
     def __init__(self):
         super().__init__("OutcomeAgent", "Verification")
-    def evaluate(self):
-        return "Contained"
+    def evaluate(self, simulation):
+        outcome = "Monitoring"
+        if simulation.get('after', {}).get('status') == 'Stabilizing':
+            outcome = "Contained"
+        self.log(f"Outcome evaluation: {outcome}.", metadata={"simulation": simulation})
+        return outcome

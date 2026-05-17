@@ -1,199 +1,18 @@
 [
   {
-    "time": "16:11:01",
-    "agent": "SeverityAgent",
-    "msg": "Efficiency Score: CIRO is 81.8% faster than manual dispatch.",
-    "reasoning": "Mention Velocity of 45/min accelerated detection.",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {
-      "manual_time": 2700,
-      "ciro_time": 490.9,
-      "efficiency": 81.8
-    },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:01",
-    "agent": "ResourceAgent",
-    "msg": "Dispatched 3 ambulances. Remaining: 12.",
-    "reasoning": "Current ambulances depletion risk: 20.0%.",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {
-      "depletion_risk": 20.0,
-      "remaining": 12
-    },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:01",
-    "agent": "DispatchAgent",
-    "msg": "[ACTION] Drone scanning Surjani sectors...",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {
-      "ticker": true
-    },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:01",
-    "agent": "DispatchAgent",
-    "msg": "[ACTION] Shahrah-e-Faisal BLOCKED due to water.",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {
-      "ticker": true
-    },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:01",
-    "agent": "DispatchAgent",
-    "msg": "[ACTION] Alerting Edhi (115) and Chhipa (1020)...",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {
-      "ticker": true
-    },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:01",
-    "agent": "PlanningAgent",
-    "msg": "Evaluating Multi-Crisis Priority Matrix...",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {},
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:01",
-    "agent": "PlanningAgent",
-    "msg": "DECISION: Prioritizing Heatwave units due to 30% higher casualty risk in elderly populations.",
-    "reasoning": "Heat-related mortality spikes faster than flood-related infrastructure damage in urban Karachi.",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {},
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:18",
-    "agent": "SocialSignal",
-    "msg": "Ingesting social signals (Urdu/Roman Urdu/English)...",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {},
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:18",
-    "agent": "TrafficGridAgent",
-    "msg": "Detected 3 major arterial jams in Karachi.",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {
-      "jams": [
-        {
-          "name": "Shahrah-e-Faisal",
-          "coords": [
-            [
-              24.8716,
-              67.0599
-            ],
-            [
-              24.8825,
-              67.0694
-            ]
-          ],
-          "status": "BLOCKED"
-        },
-        {
-          "name": "University Road",
-          "coords": [
-            [
-              24.9125,
-              67.085
-            ],
-            [
-              24.925,
-              67.115
-            ]
-          ],
-          "status": "HEAVY TRAFFIC"
-        },
-        {
-          "name": "Lyari Expressway",
-          "coords": [
-            [
-              24.885,
-              66.985
-            ],
-            [
-              24.92,
-              67.05
-            ]
-          ],
-          "status": "SLOW"
-        }
-      ]
-    },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:18",
-    "agent": "SafetyManualAgent",
-    "msg": "Generated safety checklist for Urban Flood.",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {
-      "checklist": {
-        "en": [
-          "Switch off main power",
-          "Move to upper floors",
-          "Avoid walking in flowing water"
-        ],
-        "ur": [
-          "\u0628\u062c\u0644\u06cc \u06a9\u0627 \u0645\u06cc\u0646 \u0633\u0648\u0626\u0686 \u0628\u0646\u062f \u06a9\u0631\u06cc\u06ba",
-          "\u0628\u0627\u0644\u0627\u0626\u06cc \u0645\u0646\u0632\u0644\u0648\u06ba \u067e\u0631 \u0645\u0646\u062a\u0642\u0644 \u06c1\u0648\u06ba",
-          "\u0628\u06c1\u062a\u06d2 \u067e\u0627\u0646\u06cc \u0645\u06cc\u06ba \u0686\u0644\u0646\u06d2 \u0633\u06d2 \u06af\u0631\u06cc\u0632 \u06a9\u0631\u06cc\u06ba"
-        ]
-      }
-    },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:18",
+    "time": "22:01:32",
     "agent": "DroneAgent",
-    "msg": "Dispatching Drone-7 to [24.8607, 67.0011] for visual verification.",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {},
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:18",
-    "agent": "DroneAgent",
-    "msg": "Visual Confirmation Score: 0.83",
+    "msg": "Visual Confirmation Score: 0.81",
     "reasoning": "High-res thermal imaging confirms water surge in Surjani Town.",
     "confidence": 1.0,
     "credibility": null,
     "metadata": {
-      "confirmation_score": 0.83
+      "confirmation_score": 0.81
     },
     "status": "EXECUTED"
   },
   {
-    "time": "16:11:19",
+    "time": "22:01:32",
     "agent": "SeverityAgent",
     "msg": "Dynamic Impact Calculated: 212.5",
     "reasoning": "Calculated via (Severity:85 * Density:1200) / Time:480s",
@@ -205,7 +24,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "16:11:19",
+    "time": "22:01:32",
     "agent": "SeverityAgent",
     "msg": "Efficiency Score: CIRO is 81.8% faster than manual dispatch.",
     "reasoning": "Mention Velocity of 45/min accelerated detection.",
@@ -219,20 +38,332 @@
     "status": "EXECUTED"
   },
   {
-    "time": "16:11:19",
-    "agent": "ResourceAgent",
-    "msg": "Dispatched 3 ambulances. Remaining: 12.",
-    "reasoning": "Current ambulances depletion risk: 20.0%.",
+    "time": "22:01:32",
+    "agent": "PlanningAgent",
+    "msg": "Evaluating Multi-Crisis Priority Matrix...",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {},
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "PlanningAgent",
+    "msg": "Prioritizing Urban Flooding at G-10 Main Boulevard based on highest weighted urgency.",
+    "reasoning": "Ranking crises by severity and confidence to allocate constrained resources.",
     "confidence": 1.0,
     "credibility": null,
     "metadata": {
-      "depletion_risk": 20.0,
-      "remaining": 12
+      "matrix": [
+        {
+          "type": "Urban Flooding",
+          "location": "G-10 Main Boulevard",
+          "severity": 150,
+          "confidence": 0.75,
+          "casualty_risk": "High",
+          "infra_risk": "High"
+        },
+        {
+          "type": "Heatwave",
+          "location": "Lyari",
+          "severity": 72,
+          "confidence": 0.84,
+          "casualty_risk": "High",
+          "infra_risk": "Medium"
+        }
+      ]
     },
     "status": "EXECUTED"
   },
   {
-    "time": "16:11:19",
+    "time": "22:01:32",
+    "agent": "PlanningAgent",
+    "msg": "Generating coordinated response plan for simultaneous incidents.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {},
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "PlanningAgent",
+    "msg": "Coordinated response plan created.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "actions": [
+        {
+          "type": "Urban Flooding",
+          "location": "G-10 Main Boulevard",
+          "severity": 150,
+          "confidence": 0.75,
+          "actions": [
+            "Reroute traffic away from flooded corridors",
+            "Send alert to public",
+            "Notify nearest hospital",
+            "Verify incident via drone",
+            "Deploy rescue boats"
+          ],
+          "resources_requested": {
+            "ambulances": 2,
+            "fire_trucks": 1,
+            "boats": 2
+          },
+          "resources_allocated": {
+            "ambulances": 2,
+            "fire_trucks": 1,
+            "boats": 2
+          },
+          "shortages": {
+            "ambulances": 0,
+            "fire_trucks": 0,
+            "boats": 0
+          },
+          "recommended_action": "VERIFY BEFORE DISPATCH"
+        },
+        {
+          "type": "Heatwave",
+          "location": "Lyari",
+          "severity": 72,
+          "confidence": 0.84,
+          "actions": [
+            "Open cooling shelters",
+            "Send alert to public",
+            "Notify nearest hospital",
+            "Verify incident via drone",
+            "Deploy medical outreach units"
+          ],
+          "resources_requested": {
+            "ambulances": 3,
+            "fire_trucks": 0,
+            "boats": 0
+          },
+          "resources_allocated": {
+            "ambulances": 3,
+            "fire_trucks": 0,
+            "boats": 0
+          },
+          "shortages": {
+            "ambulances": 0,
+            "fire_trucks": 0,
+            "boats": 0
+          },
+          "recommended_action": "DEPLOY_MEDICAL_OUTREACH"
+        }
+      ],
+      "remaining_resources": {
+        "ambulances": 10,
+        "fire_trucks": 7,
+        "boats": 3
+      }
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "ResourceAgent",
+    "msg": "Dispatched 2 ambulances. Remaining: 13.",
+    "reasoning": "Current ambulances depletion risk: 13.3%.",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "depletion_risk": 13.3,
+      "remaining": 13
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "ResourceAgent",
+    "msg": "Dispatched 1 fire_trucks. Remaining: 7.",
+    "reasoning": "Current fire_trucks depletion risk: 12.5%.",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "depletion_risk": 12.5,
+      "remaining": 7
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "ResourceAgent",
+    "msg": "Dispatched 2 boats. Remaining: 3.",
+    "reasoning": "Current boats depletion risk: 40.0%.",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "depletion_risk": 40.0,
+      "remaining": 3
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "ResourceAgent",
+    "msg": "Dispatched 3 ambulances. Remaining: 10.",
+    "reasoning": "Current ambulances depletion risk: 33.3%.",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "depletion_risk": 33.3,
+      "remaining": 10
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "DispatchAgent",
+    "msg": "Executing dispatch plan for coordinated emergency response.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {},
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:32",
+    "agent": "DispatchAgent",
+    "msg": "Created ticket TKT-91483 for Urban Flooding at G-10 Main Boulevard.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "resources": {
+        "ambulances": 2,
+        "fire_trucks": 1,
+        "boats": 2
+      }
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:33",
+    "agent": "DispatchAgent",
+    "msg": "Created ticket TKT-99428 for Heatwave at Lyari.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "resources": {
+        "ambulances": 3,
+        "fire_trucks": 0,
+        "boats": 0
+      }
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:33",
+    "agent": "SimulationAgent",
+    "msg": "Simulating response execution and estimating outcome impacts.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {},
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:33",
+    "agent": "SimulationAgent",
+    "msg": "Simulation complete.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "before": {
+        "congestion_level": "Critical",
+        "response_delay_mins": 45,
+        "public_alerts": "Not sent",
+        "status": "Unresolved"
+      },
+      "after": {
+        "congestion_level": "High to Moderate",
+        "response_delay_mins": 10,
+        "public_alerts": "Sent",
+        "status": "Stabilizing"
+      },
+      "expected_improvement": {
+        "congestion_reduction": "20-35%",
+        "response_time_saving": "35 minutes"
+      },
+      "resources_used": 8,
+      "side_effects": [
+        "Simultaneous alerts may generate short-term evacuation congestion on alternate routes."
+      ],
+      "actions_executed": [
+        [
+          "Reroute traffic away from flooded corridors",
+          "Send alert to public",
+          "Notify nearest hospital",
+          "Verify incident via drone",
+          "Deploy rescue boats"
+        ],
+        [
+          "Open cooling shelters",
+          "Send alert to public",
+          "Notify nearest hospital",
+          "Verify incident via drone",
+          "Deploy medical outreach units"
+        ]
+      ]
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:33",
+    "agent": "OutcomeAgent",
+    "msg": "Outcome evaluation: Contained.",
+    "reasoning": "",
+    "confidence": 1.0,
+    "credibility": null,
+    "metadata": {
+      "simulation": {
+        "before": {
+          "congestion_level": "Critical",
+          "response_delay_mins": 45,
+          "public_alerts": "Not sent",
+          "status": "Unresolved"
+        },
+        "after": {
+          "congestion_level": "High to Moderate",
+          "response_delay_mins": 10,
+          "public_alerts": "Sent",
+          "status": "Stabilizing"
+        },
+        "expected_improvement": {
+          "congestion_reduction": "20-35%",
+          "response_time_saving": "35 minutes"
+        },
+        "resources_used": 8,
+        "side_effects": [
+          "Simultaneous alerts may generate short-term evacuation congestion on alternate routes."
+        ],
+        "actions_executed": [
+          [
+            "Reroute traffic away from flooded corridors",
+            "Send alert to public",
+            "Notify nearest hospital",
+            "Verify incident via drone",
+            "Deploy rescue boats"
+          ],
+          [
+            "Open cooling shelters",
+            "Send alert to public",
+            "Notify nearest hospital",
+            "Verify incident via drone",
+            "Deploy medical outreach units"
+          ]
+        ]
+      }
+    },
+    "status": "EXECUTED"
+  },
+  {
+    "time": "22:01:33",
     "agent": "DispatchAgent",
     "msg": "[ACTION] Drone scanning Surjani sectors...",
     "reasoning": "",
@@ -244,7 +375,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "16:11:19",
+    "time": "22:01:33",
     "agent": "DispatchAgent",
     "msg": "[ACTION] Shahrah-e-Faisal BLOCKED due to water.",
     "reasoning": "",
@@ -256,7 +387,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "16:11:19",
+    "time": "22:01:33",
     "agent": "DispatchAgent",
     "msg": "[ACTION] Alerting Edhi (115) and Chhipa (1020)...",
     "reasoning": "",
@@ -265,26 +396,6 @@
     "metadata": {
       "ticker": true
     },
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:19",
-    "agent": "PlanningAgent",
-    "msg": "Evaluating Multi-Crisis Priority Matrix...",
-    "reasoning": "",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {},
-    "status": "EXECUTED"
-  },
-  {
-    "time": "16:11:19",
-    "agent": "PlanningAgent",
-    "msg": "DECISION: Prioritizing Heatwave units due to 30% higher casualty risk in elderly populations.",
-    "reasoning": "Heat-related mortality spikes faster than flood-related infrastructure damage in urban Karachi.",
-    "confidence": 1.0,
-    "credibility": null,
-    "metadata": {},
     "status": "EXECUTED"
   }
 ]

@@ -819,6 +819,11 @@
                 <span>CRITICAL ALERT ACTIVE IN KARACHI</span>
             </div>
 
+            <div id="backend-status" class="glass" style="padding: 16px; margin: 16px 16px 0; border: 1px solid rgba(255,255,255,0.08);">
+                <div style="font-weight:800; font-size:14px; margin-bottom:8px;">CIRO Runtime Status</div>
+                <div id="backend-status-text" style="font-size:13px; color:#cfd9ff;">Connecting to backend data...</div>
+            </div>
+
             <div class="map-filters" style="margin-bottom: 20px;">
                 <button class="filter-btn active" onclick="filterAlerts('all')">ALL</button>
                 <button class="filter-btn" onclick="filterAlerts('flood')">🌊</button>
@@ -1252,6 +1257,7 @@
         };
 
         // STATE
+        const CIRO_API_BASE = '/api';
         let currentLang = 'en';
         let currentFilter = 'all';
         let userLat = 24.8607, userLng = 67.0011; // Karachi Default
@@ -1506,6 +1512,7 @@
 
         function initAlerts() {
             renderAlerts();
+            loadBackendSignals();
             setInterval(() => {
                 const newMsg = POOL[Math.floor(Math.random() * POOL.length)];
                 const type = newMsg.includes('flood') ? 'flood' : newMsg.includes('fire') ? 'fire' : newMsg.includes('heat') ? 'heat' : newMsg.includes('RESOLVED') ? 'resolved' : 'traffic';
@@ -1513,6 +1520,68 @@
                 if (alerts.length > 20) alerts.pop();
                 renderAlerts(currentFilter); updateBadge();
             }, 25000);
+        }
+
+        async function loadBackendSignals() {
+            const statusEl = document.getElementById('backend-status-text');
+            let trace = null;
+            try {
+                const res = await fetch(`${CIRO_API_BASE}/trace`, { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    trace = data.agent_trace || data;
+                    trace.live_stream = data.live_stream || data.live_streams || data.liveStream || [];
+                }
+            } catch (e) {
+                trace = null;
+            }
+
+            if (!trace || Object.keys(trace).length === 0 || trace.status === 'no-trace') {
+                const paths = ['agent_trace.json', '../agent_trace.json', '/agent_trace.json'];
+                for (const path of paths) {
+                    try {
+                        const res = await fetch(path, { cache: 'no-store' });
+                        if (!res.ok) continue;
+                        trace = await res.json();
+                        break;
+                    } catch (e) {
+                        continue;
+                    }
+                }
+            }
+
+            if (!trace) {
+                statusEl.innerText = 'Backend trace file not found. Run the backend or check deployment path.';
+                return;
+            }
+
+            const crisis = trace.crisis_type || trace.current_crisis || 'Unknown';
+            const outcome = trace.outcome_status || trace.status || 'Unknown';
+            const confidence = (trace.fused_report && trace.fused_report.confidence_score) ? trace.fused_report.confidence_score : 'N/A';
+            const impact = trace.impact_score ?? 'N/A';
+
+            statusEl.innerHTML = `Latest detected incident: <strong>${crisis}</strong>.<br>Outcome: <strong>${outcome}</strong>. Confidence: <strong>${confidence}</strong>. Impact score: <strong>${impact}</strong>.`;
+
+            if (trace.fused_report && trace.fused_report.contradictory_signals) {
+                statusEl.innerHTML += '<br><span style="color:#ffb300;">Conflicting inputs detected — verification requested.</span>';
+            }
+
+            if (Array.isArray(trace.live_stream) && trace.live_stream.length) {
+                const latest = trace.live_stream[trace.live_stream.length - 1];
+                const liveMsg = latest && (latest.message || latest.msg || JSON.stringify(latest));
+                statusEl.innerHTML += `<br><span style="font-size:12px; color:#a8d4ff;">Live stream: ${liveMsg}</span>`;
+                alerts.unshift({ type: 'traffic', area: 'Live Stream', msg: liveMsg, time: 'Just now', critical: false });
+                renderAlerts(currentFilter);
+                updateBadge();
+            }
+
+            if (trace.optimization_metrics && Array.isArray(trace.optimization_metrics.ticker_logs)) {
+                trace.optimization_metrics.ticker_logs.slice(0,2).forEach(log => {
+                    alerts.unshift({ type: 'resolved', area: 'Backend Tick', msg: log, time: 'Just now', critical: false });
+                });
+                renderAlerts(currentFilter);
+                updateBadge();
+            }
         }
 
         function renderAlerts(filter = 'all') {
@@ -1909,7 +1978,7 @@
             }
         };
 
-        function getAIResponse(input) {
+        function getLocalAIResponse(input) {
             const t = input.toLowerCase();
             if (t.includes('flood') || t.includes('pani') || t.includes('سیلاب') || 
                 t.includes('barish') || t.includes('پانی')) {
@@ -1933,14 +2002,12 @@
             return AI_RESPONSES.default[currentLang] || AI_RESPONSES.default.en;
         }
 
-        function sendAIMessage() {
+        async function sendAIMessage() {
             const input = document.getElementById('ai-input');
             const msg = input.value.trim();
             if (!msg) return;
-            
+
             const chat = document.getElementById('chat-messages');
-            
-            // Add user message
             chat.innerHTML += `
                 <div style="background:rgba(0,114,255,0.15); border:1px solid rgba(0,114,255,0.3);
                             border-radius:12px 12px 4px 12px; padding:14px; 
@@ -1948,33 +2015,55 @@
                     <span style="color:#0072ff; font-weight:800;">You:</span><br>
                     ${msg}
                 </div>`;
-            
+
             input.value = '';
-            
-            // Typing indicator
             const typingId = 'typing-' + Date.now();
             chat.innerHTML += `
                 <div id="${typingId}" style="padding:14px; color:var(--cyan); font-size:13px;">
                     🤖 CIRO is thinking...
                 </div>`;
             chat.scrollTop = chat.scrollHeight;
-            
-            // Simulate AI response delay (realistic feel)
-            setTimeout(() => {
-                const typingEl = document.getElementById(typingId);
-                if (typingEl) typingEl.remove();
-                
-                const response = getAIResponse(msg);
-                
+
+            let answer = '';
+            let usedFallback = false;
+            try {
+                const res = await fetch(`${CIRO_API_BASE}/ask`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: msg })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    answer = data.answer || getLocalAIResponse(msg);
+                } else {
+                    usedFallback = true;
+                    answer = getLocalAIResponse(msg);
+                }
+            } catch (e) {
+                usedFallback = true;
+                answer = getLocalAIResponse(msg);
+            }
+
+            const typingEl = document.getElementById(typingId);
+            if (typingEl) typingEl.remove();
+
+            chat.innerHTML += `
+                <div style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.2);
+                            border-radius:12px 12px 12px 4px; padding:14px; font-size:14px;
+                            white-space:pre-line;">
+                    <span style="color:var(--cyan); font-weight:800;">🤖 CIRO:</span><br>
+                    ${answer}
+                </div>`;
+
+            if (usedFallback) {
                 chat.innerHTML += `
-                    <div style="background:rgba(0,229,255,0.1); border:1px solid rgba(0,229,255,0.2);
-                                border-radius:12px 12px 12px 4px; padding:14px; font-size:14px;
-                                white-space:pre-line;">
-                        <span style="color:var(--cyan); font-weight:800;">🤖 CIRO:</span><br>
-                        ${response}
+                    <div style="font-size:11px; color:#ffb300; margin-top:6px;">
+                        ⚠ Live AI backend unavailable. Showing local responder fallback.
                     </div>`;
-                chat.scrollTop = chat.scrollHeight;
-            }, 800 + Math.random() * 400);
+            }
+
+            chat.scrollTop = chat.scrollHeight;
         }
 
         function askQuick(question) {

@@ -198,6 +198,30 @@ Each action shows before state, response action, expected after state, response 
 
 ## Stakeholder Notifications (Tailored for Each Audience)
 
+---
+
+## Run the live CIRO backend locally
+
+1. Install the Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Start the server:
+
+```bash
+uvicorn ciro_api:app --reload
+```
+
+3. Open the app in your browser:
+
+```text
+http://127.0.0.1:8000
+```
+
+The `Ask CIRO` tab now sends questions to the local AI endpoint at `/api/ask` using the open-source `google/flan-t5-small` model.
+
 - **Public:** Bilingual SMS-style alert with evacuation instruction
 - **Hospitals:** ER preparation notice with expected casualty type and ETA
 - **Police/Traffic:** Rerouting instructions with specific road names
@@ -360,8 +384,6 @@ CIRO/
 ├── index.html                  Complete mobile app (HTML + CSS + JS)
 ├── agents.py                   15 Antigravity agent classes
 ├── ciro_orchestrator.py        Main pipeline orchestrator
-├── signal_fusion.py            Signal credibility and fusion engine
-├── action_responder.py         Action execution simulator
 ├── demo_loop.py                Randomized Karachi demo (10s refresh)
 ├── mock_signals/
 │   ├── weather_alerts.json     PMD weather data
