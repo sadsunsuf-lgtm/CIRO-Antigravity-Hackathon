@@ -334,8 +334,8 @@ def run_ciro_system(scenario="STANDARD"):
     with open('agent_trace.json', 'w') as f:
         json.dump(full_trace, f, indent=4)
 
-    print("\n=== KARACHI EMERGENCY APP REFACTOR COMPLETE ===")
+    print("\n=== CIRO PAKISTAN ORCHESTRATION COMPLETE ===")
     print(f"Alert: {detected_crisis['type']} | Efficiency: {efficiency_stats['efficiency']}%")
 
 if __name__ == "__main__":
-    run_ciro_system("KARACHI_APP_V2")
+    run_ciro_system("PAKISTAN_APP_V2")
