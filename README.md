@@ -322,7 +322,7 @@ The `Ask CIRO` tab now sends questions to the local AI endpoint at `/api/ask` us
 
 ## Assumptions Made
 
-All APIs are simulated with realistic mock data for the hackathon. Emergency phone numbers are real. Hospital GPS coordinates are real Karachi locations. Social media posts use authentic English, Urdu, and Roman Urdu Pakistani language patterns. Credibility weights assume government sources are more reliable than social posts. GPS defaults to Karachi center when user denies permission. The demo_loop.py cycles through randomized Karachi hotspots every 10 seconds to simulate a live environment.
+All APIs are simulated with realistic mock data for the hackathon. Emergency phone numbers are real. Hospital GPS coordinates are real Karachi locations. Social media posts use authentic English, Urdu, and Roman Urdu Pakistani language patterns. Credibility weights assume government sources are more reliable than social posts. GPS defaults to Karachi center when user denies permission. The demo_loop.py cycles through randomized Pakistan-wide hotspots (9 locations across 7 cities) every 10 seconds to simulate a live environment.
 
 ---
 
@@ -369,7 +369,7 @@ The 15-agent architecture is modular. Each agent works independently so new agen
 
 **Simulated APIs:** Real PMD and NHA APIs require government credentials. Connection architecture is designed and documented for production integration.
 
-**Voice on HTTPS only:** Web Speech API requires HTTPS. Works on Netlify deployment. Does not work on local file:// access.
+**Voice on HTTPS only:** Web Speech API requires HTTPS. Works perfectly on the live Vercel deployment at https://ciro-pakistan.vercel.app/. Does not work on local file:// access.
 
 **Urdu NLP is keyword-based:** Production would use a multilingual model such as mBERT for full semantic understanding.
 
@@ -381,18 +381,27 @@ The 15-agent architecture is modular. Each agent works independently so new agen
 
 ```
 CIRO/
-├── index.html                  Complete mobile app (HTML + CSS + JS)
+├── mobile_app/
+│   └── index.html              Complete mobile app (HTML + CSS + JS)
+├── api/
+│   ├── ask.py                  /api/ask — AI emergency guidance (Vercel serverless)
+│   ├── health.py               /api/health — Backend health check
+│   └── trace.py                /api/trace — Agent trace output
 ├── agents.py                   15 Antigravity agent classes
 ├── ciro_orchestrator.py        Main pipeline orchestrator
-├── demo_loop.py                Randomized Karachi demo (10s refresh)
+├── ciro_api.py                 Local FastAPI server (dev use)
+├── demo_loop.py                Randomized Pakistan-wide demo (10s refresh)
+├── vercel.json                 Vercel deployment configuration
+├── requirements.txt            Python dependencies
 ├── mock_signals/
 │   ├── weather_alerts.json     PMD weather data
 │   ├── traffic_updates.json    NHA traffic data
 │   └── twitter_feed.json       6 posts English + Urdu + Roman Urdu
+├── docs_and_logs/
+│   ├── FINAL_AGENT_TRACE.md    Human-readable trace documentation
+│   └── ROBUSTNESS_EVIDENCE.md  API failure scenario evidence
 ├── agent_trace.json            Full 15-agent reasoning trace
 ├── live_stream.json            Real-time last-20 agent log entries
-├── FINAL_AGENT_TRACE.md        Human-readable trace documentation
-├── ROBUSTNESS_EVIDENCE.md      API failure scenario evidence
 └── README.md                   This file
 ```
 
