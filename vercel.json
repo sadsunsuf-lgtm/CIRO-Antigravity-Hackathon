@@ -1,7 +1,8 @@
 {
+  "version": 2,
   "builds": [
     {
-      "src": "ciro_api.py",
+      "src": "api/*.py",
       "use": "@vercel/python"
     },
     {
@@ -11,12 +12,28 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "ciro_api.py"
+      "src": "/api/ask",
+      "dest": "/api/ask.py"
+    },
+    {
+      "src": "/api/health",
+      "dest": "/api/health.py"
+    },
+    {
+      "src": "/api/trace",
+      "dest": "/api/trace.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/mobile_app/$1"
+    },
+    {
+      "src": "/(.*\\.(css|js|png|jpg|ico|svg|woff|woff2|ttf))",
+      "dest": "/mobile_app/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/mobile_app/$1"
+      "dest": "/mobile_app/index.html"
     }
   ]
 }
