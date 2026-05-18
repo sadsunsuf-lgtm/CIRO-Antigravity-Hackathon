@@ -1,6 +1,55 @@
+"""
+CIRO — Crisis Intelligence & Response Orchestrator
+Google Antigravity Hackathon 2026
+
+This orchestrator uses Google Gemini (Antigravity) to generate
+natural-language reasoning summaries at the crisis detection stage.
+All 15 agents run autonomously; Gemini enhances the reasoning layer.
+"""
 import json
 import os
 import datetime
+
+# ─── Google Gemini / Antigravity Integration ─────────────────────────────────
+try:
+    import google.generativeai as genai
+    _key = os.environ.get("GEMINI_API_KEY", "")
+    if _key:
+        genai.configure(api_key=_key)
+        ANTIGRAVITY_MODEL = genai.GenerativeModel(
+            model_name="gemini-2.0-flash",
+            system_instruction=(
+                "You are the reasoning core of CIRO, Pakistan's Crisis Intelligence System. "
+                "Given a crisis situation, produce a 3-sentence strategic reasoning summary: "
+                "(1) what you detected, (2) why it is high priority, (3) what the key action is."
+            )
+        )
+        HAS_ANTIGRAVITY = True
+    else:
+        HAS_ANTIGRAVITY = False
+except ImportError:
+    HAS_ANTIGRAVITY = False
+
+def antigravity_reasoning(crisis_type: str, location: str, confidence: float, severity: int) -> str:
+    """Call Gemini to generate a natural-language reasoning summary for the detected crisis."""
+    if not HAS_ANTIGRAVITY:
+        return (
+            f"[Local Reasoning] Detected {crisis_type} at {location}. "
+            f"Confidence: {confidence} | Severity: {severity}/150. "
+            f"Dispatching emergency response units."
+        )
+    try:
+        prompt = (
+            f"Crisis detected: {crisis_type} at {location}, Pakistan. "
+            f"Confidence score: {confidence}. Severity index: {severity}/150. "
+            f"Generate a 3-sentence strategic reasoning summary."
+        )
+        response = ANTIGRAVITY_MODEL.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        return f"[Antigravity reasoning unavailable: {e}]"
+
+# ─────────────────────────────────────────────────────────────────────────────
 from agents import (
     SocialSignalAgent, WeatherAgent, TrafficAgent, CrisisDetectionAgent,
     ReasoningAgent, SeverityAnalysisAgent, ActionPlanningAgent,
@@ -267,6 +316,18 @@ def run_ciro_system(scenario="STANDARD"):
     # Step 5: Drone Dispatch Logic
     agents["drone"].verify(24.8607, 67.0011)
 
+    # ── Antigravity / Gemini Reasoning Layer ─────────────────────────────────
+    # Call Google Gemini to generate a natural-language strategic reasoning
+    # summary for this crisis — this is the Antigravity intelligence layer.
+    ai_reasoning = antigravity_reasoning(
+        crisis_type=detected_crisis["type"],
+        location=detected_crisis["location"],
+        confidence=detected_crisis["confidence"],
+        severity=detected_crisis["severity"]
+    )
+    print(f"\n[ANTIGRAVITY] {ai_reasoning}\n")
+    # ─────────────────────────────────────────────────────────────────────────
+
     # Step 6: Severity & Impact
     impact_score = agents["severity"].calculate_impact(85, 1200, 480)
     efficiency_stats = agents["severity"].calculate_resource_savings(45)
@@ -309,10 +370,11 @@ def run_ciro_system(scenario="STANDARD"):
     ticker_logs.append(agents["dispatch"].generate_ticker_log("Traffic", "Shahrah-e-Faisal BLOCKED due to water."))
     ticker_logs.append(agents["dispatch"].generate_ticker_log("SOS", "Alerting Edhi (115) and Chhipa (1020)..."))
 
-    # Step 9: Save Final Trace for Karachi Emergency App
+    # Step 9: Save Final Trace for Pakistan Emergency App
     full_trace = {
         "timestamp": datetime.datetime.now().isoformat(),
         "crisis_type": detected_crisis["type"],
+        "antigravity_reasoning": ai_reasoning,          # ← Gemini-generated reasoning
         "impact_score": impact_score,
         "resources_remaining": agents["resource"].get_status(),
         "dispatch_result": dispatch_result,

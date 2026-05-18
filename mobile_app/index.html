@@ -1024,7 +1024,7 @@
                             class="filter-btn" style="font-size:11px; padding:6px 12px;">
                         🌊 Flood advice
                     </button>
-                    <button onclick="askQuick('کیا آس پاس کوئی ہسپتال ہے؟')" 
+                    <button onclick="askQuick(currentLang === 'ur' ? 'کیا آس پاس کوئی ہسپتال ہے؟' : 'Is there a hospital nearby?')" 
                             class="filter-btn" style="font-size:11px; padding:6px 12px;">
                         🏥 Nearby hospital
                     </button>
@@ -1032,7 +1032,7 @@
                             class="filter-btn" style="font-size:11px; padding:6px 12px;">
                         🌡 Heat stroke help
                     </button>
-                    <button onclick="askQuick('آگ لگ گئی، ابھی کیا کروں؟')" 
+                    <button onclick="askQuick(currentLang === 'ur' ? 'آگ لگ گئی، ابھی کیا کروں؟' : 'Fire has started, what do I do now?')" 
                             class="filter-btn" style="font-size:11px; padding:6px 12px;">
                         🔥 Fire emergency
                     </button>
@@ -1978,28 +1978,33 @@
             }
         };
 
+        function detectInputLanguage(text) {
+            return /[\u0600-\u06FF]/.test(text) ? 'ur' : 'en';
+        }
+
         function getLocalAIResponse(input) {
             const t = input.toLowerCase();
+            const lang = detectInputLanguage(input) === 'ur' ? 'ur' : currentLang === 'ur' ? 'ur' : 'en';
             if (t.includes('flood') || t.includes('pani') || t.includes('سیلاب') || 
                 t.includes('barish') || t.includes('پانی')) {
-                return AI_RESPONSES.flood[currentLang] || AI_RESPONSES.flood.en;
+                return AI_RESPONSES.flood[lang] || AI_RESPONSES.flood.en;
             }
             if (t.includes('fire') || t.includes('aag') || t.includes('آگ') || 
                 t.includes('جل')) {
-                return AI_RESPONSES.fire[currentLang] || AI_RESPONSES.fire.en;
+                return AI_RESPONSES.fire[lang] || AI_RESPONSES.fire.en;
             }
             if (t.includes('heat') || t.includes('garmi') || t.includes('گرمی') || 
                 t.includes('لو') || t.includes('stroke')) {
-                return AI_RESPONSES.heat[currentLang] || AI_RESPONSES.heat.en;
+                return AI_RESPONSES.heat[lang] || AI_RESPONSES.heat.en;
             }
             if (t.includes('hospital') || t.includes('doctor') || t.includes('ہسپتال') || 
                 t.includes('dawakhana') || t.includes('ambulance')) {
-                return AI_RESPONSES.hospital[currentLang] || AI_RESPONSES.hospital.en;
+                return AI_RESPONSES.hospital[lang] || AI_RESPONSES.hospital.en;
             }
             if (t.includes('earthquake') || t.includes('zilzala') || t.includes('زلزلہ')) {
-                return AI_RESPONSES.earthquake[currentLang] || AI_RESPONSES.earthquake.en;
+                return AI_RESPONSES.earthquake[lang] || AI_RESPONSES.earthquake.en;
             }
-            return AI_RESPONSES.default[currentLang] || AI_RESPONSES.default.en;
+            return AI_RESPONSES.default[lang] || AI_RESPONSES.default.en;
         }
 
         async function sendAIMessage() {
@@ -2075,7 +2080,7 @@
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) { alert('Voice not supported. Use Chrome.'); return; }
             const r = new SpeechRecognition();
-            r.lang = 'en-US';
+            r.lang = currentLang === 'ur' ? 'ur-PK' : 'en-US';
             r.onresult = (e) => {
                 document.getElementById('ai-input').value = e.results[0][0].transcript;
                 sendAIMessage();
