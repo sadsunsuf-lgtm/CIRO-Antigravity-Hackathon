@@ -399,7 +399,11 @@ CIRO/
 │   └── twitter_feed.json       6 posts English + Urdu + Roman Urdu
 ├── docs_and_logs/
 │   ├── FINAL_AGENT_TRACE.md    Human-readable trace documentation
-│   └── ROBUSTNESS_EVIDENCE.md  API failure scenario evidence
+│   ├── ROBUSTNESS_EVIDENCE.md  API failure scenario evidence
+│   ├── walkthrough.md         Project walkthrough and usage notes
+│   ├── implementation_plan.md Implementation plan and development tasks
+│   ├── task.md                Task list and team coordination
+│   └── Finalizing CIRO Deployment Readiness.md  Deployment readiness summary
 ├── agent_trace.json            Full 15-agent reasoning trace
 ├── live_stream.json            Real-time last-20 agent log entries
 └── README.md                   This file
