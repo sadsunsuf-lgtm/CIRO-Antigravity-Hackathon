@@ -1020,20 +1020,24 @@
                     QUICK QUESTIONS:
                 </p>
                 <div style="display:flex; flex-wrap:wrap; gap:6px;">
-                    <button onclick="askQuick('Flood in my area, what do I do now?')" 
-                            class="filter-btn" style="font-size:11px; padding:6px 12px;">
+                    <button onclick="askQuick(currentLang === 'ur' ? 'میرے علاقے میں سیلاب ہے، میں کیا کروں؟' : 'Flood in my area, what do I do now?')" 
+                            class="filter-btn" style="font-size:11px; padding:6px 12px;"
+                            data-en="🌊 Flood advice" data-ur="🌊 سیلاب مشورہ">
                         🌊 Flood advice
                     </button>
                     <button onclick="askQuick(currentLang === 'ur' ? 'کیا آس پاس کوئی ہسپتال ہے؟' : 'Is there a hospital nearby?')" 
-                            class="filter-btn" style="font-size:11px; padding:6px 12px;">
+                            class="filter-btn" style="font-size:11px; padding:6px 12px;"
+                            data-en="🏥 Nearby hospital" data-ur="🏥 قریبی ہسپتال">
                         🏥 Nearby hospital
                     </button>
-                    <button onclick="askQuick('Heat stroke symptoms and treatment')" 
-                            class="filter-btn" style="font-size:11px; padding:6px 12px;">
+                    <button onclick="askQuick(currentLang === 'ur' ? 'ہیٹ اسٹروک کی علامات اور علاج کیا ہیں؟' : 'Heat stroke symptoms and treatment')" 
+                            class="filter-btn" style="font-size:11px; padding:6px 12px;"
+                            data-en="🌡 Heat stroke help" data-ur="🌡 ہیٹ اسٹروک مدد">
                         🌡 Heat stroke help
                     </button>
                     <button onclick="askQuick(currentLang === 'ur' ? 'آگ لگ گئی، ابھی کیا کروں؟' : 'Fire has started, what do I do now?')" 
-                            class="filter-btn" style="font-size:11px; padding:6px 12px;">
+                            class="filter-btn" style="font-size:11px; padding:6px 12px;"
+                            data-en="🔥 Fire emergency" data-ur="🔥 آگ ایمرجنسی">
                         🔥 Fire emergency
                     </button>
                 </div>
