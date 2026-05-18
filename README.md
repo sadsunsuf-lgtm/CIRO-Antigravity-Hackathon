@@ -3,7 +3,7 @@
 
 > **CIRO is the only emergency app in Pakistan that speaks to you in Urdu, listens to your voice commands, detects crises before they reach you, and guides you step by step — whether you are at home in Karachi or driving to Lahore.**
 
-**Live App:** https://ciro-pakistan.vercel.app/
+**Live App:** https://ciro-antigravity-hackathon.vercel.app/
 **GitHub:** https://github.com/sadsunsuf-lgtm/CIRO-Antigravity-Hackathon
 
 ---
