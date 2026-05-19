@@ -369,7 +369,7 @@ The 15-agent architecture is modular. Each agent works independently so new agen
 
 **Simulated APIs:** Real PMD and NHA APIs require government credentials. Connection architecture is designed and documented for production integration.
 
-**Voice on HTTPS only:** Web Speech API requires HTTPS. Works perfectly on the live Vercel deployment at https://ciro-pakistan.vercel.app/. Does not work on local file:// access.
+**Voice on HTTPS only:** Web Speech API requires HTTPS. Works perfectly on the live Vercel deployment at https://ciro-antigravity-hackathon.vercel.app/ . Does not work on local file:// access.
 
 **Urdu NLP is keyword-based:** Production would use a multilingual model such as mBERT for full semantic understanding.
 
