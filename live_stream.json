@@ -1,18 +1,18 @@
 [
   {
-    "time": "22:01:32",
+    "time": "20:45:41",
     "agent": "DroneAgent",
-    "msg": "Visual Confirmation Score: 0.81",
+    "msg": "Visual Confirmation Score: 0.93",
     "reasoning": "High-res thermal imaging confirms water surge in Surjani Town.",
     "confidence": 1.0,
     "credibility": null,
     "metadata": {
-      "confirmation_score": 0.81
+      "confirmation_score": 0.93
     },
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "SeverityAgent",
     "msg": "Dynamic Impact Calculated: 212.5",
     "reasoning": "Calculated via (Severity:85 * Density:1200) / Time:480s",
@@ -24,7 +24,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "SeverityAgent",
     "msg": "Efficiency Score: CIRO is 81.8% faster than manual dispatch.",
     "reasoning": "Mention Velocity of 45/min accelerated detection.",
@@ -38,7 +38,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "PlanningAgent",
     "msg": "Evaluating Multi-Crisis Priority Matrix...",
     "reasoning": "",
@@ -48,7 +48,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "PlanningAgent",
     "msg": "Prioritizing Urban Flooding at G-10 Main Boulevard based on highest weighted urgency.",
     "reasoning": "Ranking crises by severity and confidence to allocate constrained resources.",
@@ -77,7 +77,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "PlanningAgent",
     "msg": "Generating coordinated response plan for simultaneous incidents.",
     "reasoning": "",
@@ -87,7 +87,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "PlanningAgent",
     "msg": "Coordinated response plan created.",
     "reasoning": "",
@@ -163,7 +163,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "ResourceAgent",
     "msg": "Dispatched 2 ambulances. Remaining: 13.",
     "reasoning": "Current ambulances depletion risk: 13.3%.",
@@ -176,7 +176,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "ResourceAgent",
     "msg": "Dispatched 1 fire_trucks. Remaining: 7.",
     "reasoning": "Current fire_trucks depletion risk: 12.5%.",
@@ -189,7 +189,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "ResourceAgent",
     "msg": "Dispatched 2 boats. Remaining: 3.",
     "reasoning": "Current boats depletion risk: 40.0%.",
@@ -202,7 +202,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "ResourceAgent",
     "msg": "Dispatched 3 ambulances. Remaining: 10.",
     "reasoning": "Current ambulances depletion risk: 33.3%.",
@@ -215,7 +215,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "DispatchAgent",
     "msg": "Executing dispatch plan for coordinated emergency response.",
     "reasoning": "",
@@ -225,9 +225,9 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:32",
+    "time": "20:45:44",
     "agent": "DispatchAgent",
-    "msg": "Created ticket TKT-91483 for Urban Flooding at G-10 Main Boulevard.",
+    "msg": "Created ticket TKT-97915 for Urban Flooding at G-10 Main Boulevard.",
     "reasoning": "",
     "confidence": 1.0,
     "credibility": null,
@@ -241,9 +241,9 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:33",
+    "time": "20:45:44",
     "agent": "DispatchAgent",
-    "msg": "Created ticket TKT-99428 for Heatwave at Lyari.",
+    "msg": "Created ticket TKT-99075 for Heatwave at Lyari.",
     "reasoning": "",
     "confidence": 1.0,
     "credibility": null,
@@ -257,7 +257,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:33",
+    "time": "20:45:44",
     "agent": "SimulationAgent",
     "msg": "Simulating response execution and estimating outcome impacts.",
     "reasoning": "",
@@ -267,7 +267,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:33",
+    "time": "20:45:44",
     "agent": "SimulationAgent",
     "msg": "Simulation complete.",
     "reasoning": "",
@@ -314,7 +314,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:33",
+    "time": "20:45:45",
     "agent": "OutcomeAgent",
     "msg": "Outcome evaluation: Contained.",
     "reasoning": "",
@@ -363,7 +363,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:33",
+    "time": "20:45:45",
     "agent": "DispatchAgent",
     "msg": "[ACTION] Drone scanning Surjani sectors...",
     "reasoning": "",
@@ -375,7 +375,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:33",
+    "time": "20:45:45",
     "agent": "DispatchAgent",
     "msg": "[ACTION] Shahrah-e-Faisal BLOCKED due to water.",
     "reasoning": "",
@@ -387,7 +387,7 @@
     "status": "EXECUTED"
   },
   {
-    "time": "22:01:33",
+    "time": "20:45:45",
     "agent": "DispatchAgent",
     "msg": "[ACTION] Alerting Edhi (115) and Chhipa (1020)...",
     "reasoning": "",

@@ -12,18 +12,18 @@ import datetime
 
 # ─── Google Gemini / Antigravity Integration ─────────────────────────────────
 try:
-    import google.generativeai as genai
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+try:
+    from google import genai
+    from google.genai import types
+
     _key = os.environ.get("GEMINI_API_KEY", "")
     if _key:
-        genai.configure(api_key=_key)
-        ANTIGRAVITY_MODEL = genai.GenerativeModel(
-            model_name="gemini-2.0-flash",
-            system_instruction=(
-                "You are the reasoning core of CIRO, Pakistan's Crisis Intelligence System. "
-                "Given a crisis situation, produce a 3-sentence strategic reasoning summary: "
-                "(1) what you detected, (2) why it is high priority, (3) what the key action is."
-            )
-        )
+        client = genai.Client(api_key=_key)
         HAS_ANTIGRAVITY = True
     else:
         HAS_ANTIGRAVITY = False
@@ -44,7 +44,13 @@ def antigravity_reasoning(crisis_type: str, location: str, confidence: float, se
             f"Confidence score: {confidence}. Severity index: {severity}/150. "
             f"Generate a 3-sentence strategic reasoning summary."
         )
-        response = ANTIGRAVITY_MODEL.generate_content(prompt)
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction="You are the reasoning core of CIRO, Pakistan's Crisis Intelligence System. Given a crisis situation, produce a 3-sentence strategic reasoning summary: (1) what you detected, (2) why it is high priority, (3) what the key action is."
+            )
+        )
         return response.text.strip()
     except Exception as e:
         return f"[Antigravity reasoning unavailable: {e}]"

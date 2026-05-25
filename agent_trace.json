@@ -1,6 +1,7 @@
 {
-    "timestamp": "2026-05-17T22:01:33.159997",
+    "timestamp": "2026-05-20T20:45:45.093588",
     "crisis_type": "Urban Flooding",
+    "antigravity_reasoning": "[Antigravity reasoning unavailable: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}]",
     "impact_score": 212.5,
     "resources_remaining": {
         "ambulances": 10,
@@ -13,7 +14,7 @@
             {
                 "crisis": "Urban Flooding",
                 "location": "G-10 Main Boulevard",
-                "ticket_id": "TKT-91483",
+                "ticket_id": "TKT-97915",
                 "resources": {
                     "ambulances": 2,
                     "fire_trucks": 1,
@@ -23,7 +24,7 @@
             {
                 "crisis": "Heatwave",
                 "location": "Lyari",
-                "ticket_id": "TKT-99428",
+                "ticket_id": "TKT-99075",
                 "resources": {
                     "ambulances": 3,
                     "fire_trucks": 0,

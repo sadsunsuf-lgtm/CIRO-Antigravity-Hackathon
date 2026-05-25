@@ -12,23 +12,18 @@ import re
 
 # ─── Google Gemini / Antigravity Integration ────────────────────────────────
 try:
-    import google.generativeai as genai
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
+try:
+    from google import genai
+    from google.genai import types
 
     GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
     if GEMINI_API_KEY:
-        genai.configure(api_key=GEMINI_API_KEY)
-        CIRO_MODEL = genai.GenerativeModel(
-            model_name="gemini-2.0-flash",
-            system_instruction=(
-                "You are CIRO — Pakistan's AI-powered Crisis Intelligence & Response Orchestrator. "
-                "Your mission is to save lives by giving clear, calm, and actionable emergency guidance. "
-                "You cover all of Pakistan: Karachi, Lahore, Islamabad, Peshawar, Quetta, Multan, Hyderabad. "
-                "You respond in the same language the user writes in — if they write in Urdu or Roman Urdu, reply in Urdu. "
-                "Always include: what to do RIGHT NOW, emergency contact numbers, and a safety tip. "
-                "Key Pakistan emergency numbers: Rescue 1122, Edhi 115, Chhipa 1020, Police 15, Fire Brigade 16, K-Electric 118, NDMA 1700. "
-                "Keep responses under 200 words. Use numbered steps. Be direct — lives are at stake."
-            )
-        )
+        client = genai.Client(api_key=GEMINI_API_KEY)
         HAS_GEMINI = True
     else:
         HAS_GEMINI = False
@@ -258,10 +253,17 @@ class handler(BaseHTTPRequestHandler):
         if HAS_GEMINI:
             try:
                 prompt = build_gemini_prompt(question)
-                response = CIRO_MODEL.generate_content(prompt)
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        system_instruction="You are CIRO — Pakistan's AI-powered Crisis Intelligence & Response Orchestrator. Your mission is to save lives by giving clear, calm, and actionable emergency guidance. You cover all of Pakistan: Karachi, Lahore, Islamabad, Peshawar, Quetta, Multan, Hyderabad. You respond in the same language the user writes in — if they write in Urdu or Roman Urdu, reply in Urdu. Always include: what to do RIGHT NOW, emergency contact numbers, and a safety tip. Key Pakistan emergency numbers: Rescue 1122, Edhi 115, Chhipa 1020, Police 15, Fire Brigade 16, K-Electric 118, NDMA 1700. Keep responses under 200 words. Use numbered steps. Be direct — lives are at stake."
+                    )
+                )
                 answer = response.text.strip()
-                source = "gemini-2.0-flash"
-            except Exception:
+                source = "gemini-2.5-flash"
+            except Exception as e:
+                print(f"Gemini API error: {e}")
                 answer = ""  # fall through to local
 
         # ── Fall back to smart local responder ──────────────────────────────

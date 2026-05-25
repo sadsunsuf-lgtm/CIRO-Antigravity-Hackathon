@@ -7,12 +7,23 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 try:
-    from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-    HAS_TRANSFORMERS = True
+    from dotenv import load_dotenv
+    load_dotenv()
 except ImportError:
-    HAS_TRANSFORMERS = False
+    pass
 
-MODEL_ID = "google/flan-t5-small"
+try:
+    from google import genai
+    from google.genai import types
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+    if GEMINI_API_KEY:
+        client = genai.Client(api_key=GEMINI_API_KEY)
+        HAS_GEMINI = True
+    else:
+        HAS_GEMINI = False
+except ImportError:
+    HAS_GEMINI = False
+
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(ROOT_DIR, "mobile_app")
 
@@ -21,24 +32,14 @@ class AskRequest(BaseModel):
 
 app = FastAPI(title="CIRO AI Backend", docs_url="/api/docs")
 
-model_ready = False
-model = None
-tokenizer = None
+model_ready = HAS_GEMINI
 
 @app.on_event("startup")
 async def load_model():
-    global tokenizer, model, model_ready
-    if HAS_TRANSFORMERS:
-        try:
-            tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
-            model = AutoModelForSeq2SeqLM.from_pretrained(MODEL_ID)
-            model_ready = True
-        except Exception as e:
-            print("Failed to load model:", e)
-            model_ready = False
+    if not HAS_GEMINI:
+        print("Gemini API not available. Running in lightweight fallback mode.")
     else:
-        print("Transformers not installed. Running in lightweight mode.")
-        model_ready = False
+        print("Gemini API connected successfully.")
 
 
 def build_prompt(question: str) -> str:
@@ -65,9 +66,16 @@ async def ask_ciro(request: AskRequest):
         raise HTTPException(status_code=503, detail="Model is still loading")
 
     prompt = build_prompt(request.question.strip())
-    inputs = tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512)
-    outputs = model.generate(**inputs, max_new_tokens=256, do_sample=False, num_beams=4)
-    answer = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+    try:
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+        )
+        answer = response.text.strip()
+    except Exception as e:
+        print(f"Gemini error: {e}")
+        answer = ""
+
     return {"answer": answer}
 
 @app.get("/api/trace")
@@ -84,8 +92,5 @@ async def get_trace():
 async def health():
     return {"ok": True, "model_ready": model_ready}
 
-app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
-
-@app.get("/")
-async def root():
-    return FileResponse(os.path.join(STATIC_DIR, "index.html"))
+# Mount the mobile_app directory at root to serve all static files (css, js, images) seamlessly
+app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
